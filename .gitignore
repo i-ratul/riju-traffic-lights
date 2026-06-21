@@ -5,3 +5,6 @@ Thumbs.db
 
 # Local preview helper (not needed for deploy)
 .claude/
+
+# Backup of the untrimmed car art (kept locally, not deployed)
+assets/car-original-untrimmed.png
