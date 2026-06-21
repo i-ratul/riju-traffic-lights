@@ -1,0 +1,18 @@
+{
+  "name": "Wait for Green",
+  "short_name": "Wait for Green",
+  "description": "A calm go/stop traffic-light game.",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#6FC5E8",
+  "theme_color": "#6FC5E8",
+  "start_url": "./index.html",
+  "icons": [
+    {
+      "src": "assets/go.png",
+      "sizes": "565x533",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Lock zoom/scale so a toddler can't pinch-zoom or double-tap-zoom -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#6FC5E8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Wait for Green</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===== The game scene (everything sits inside here) ===== -->
+  <div id="scene">
+
+    <!-- Sky + clouds + grass + road are drawn with CSS in style.css -->
+    <div id="sky"></div>
+    <div id="clouds">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
+    </div>
+    <div id="grass"></div>
+    <div id="road">
+      <div id="road-dashes"></div>
+    </div>
+
+    <!-- Traffic light: the PNG housing + three glow circles overlaid in code -->
+    <div id="light">
+      <img src="assets/light.png" alt="Traffic light" draggable="false" />
+      <div class="lamp lamp-red"></div>
+      <div class="lamp lamp-amber"></div>
+      <div class="lamp lamp-green"></div>
+    </div>
+
+    <!-- The car (stays put; the world scrolls past it) -->
+    <div id="car">
+      <img src="assets/car.png" alt="Car" draggable="false" />
+    </div>
+
+    <!-- Big tap buttons -->
+    <button id="btn-go" class="game-btn" aria-label="Go">
+      <img src="assets/go.png" alt="Go" draggable="false" />
+    </button>
+    <button id="btn-stop" class="game-btn" aria-label="Stop">
+      <img src="assets/stop.png" alt="Stop" draggable="false" />
+    </button>
+
+  </div>
+
+  <!-- ===== Tap-to-start overlay (the one required user gesture) ===== -->
+  <div id="start-overlay" class="overlay">
+    <div class="overlay-inner">
+      <div class="start-title">Wait for Green</div>
+      <div class="start-sub">Tap anywhere to start</div>
+    </div>
+  </div>
+
+  <!-- ===== Rotate-phone overlay (shown only in portrait) ===== -->
+  <div id="rotate-overlay" class="overlay">
+    <div class="overlay-inner">
+      <div class="rotate-emoji">🔄</div>
+      <div class="start-sub">Please rotate your phone</div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

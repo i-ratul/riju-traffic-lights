@@ -1,0 +1,7 @@
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+*.log
+
+# Local preview helper (not needed for deploy)
+.claude/
