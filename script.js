@@ -17,11 +17,13 @@ const STOP_WINDOW = 5000;                      // time to press STOP before the 
 const STOPPED_MIN = 5000, STOPPED_MAX = 10000; // pause before next green
 const GO_REPROMPT = 4000;                      // re-say "Go!" if GO not pressed
 const COAST_MS = 1800;                         // gentle roll-to-stop on a miss
+const AMBER_MS = 2000;                          // amber "get ready" phase before green AND before red
 
 /* ------------------------------------------------------------------
    2. GRAB THE ELEMENTS WE NEED
    ------------------------------------------------------------------ */
 const lampRed     = document.querySelector('.lamp-red');
+const lampAmber   = document.querySelector('.lamp-amber');
 const lampGreen   = document.querySelector('.lamp-green');
 const car         = document.getElementById('car');
 const road        = document.getElementById('road-dashes');
@@ -83,8 +85,16 @@ const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 /* ------------------------------------------------------------------
    5. SMALL VISUAL HELPERS
    ------------------------------------------------------------------ */
-function showRed()   { lampRed.classList.add('on');    lampGreen.classList.remove('on'); }
-function showGreen() { lampGreen.classList.add('on');  lampRed.classList.remove('on');   }
+// Turn exactly one lamp on (or none). Always clears the others,
+// so amber is properly switched off when red/green come on.
+function setLamp(which) {
+  lampRed.classList.toggle('on',   which === 'red');
+  lampAmber.classList.toggle('on', which === 'amber');
+  lampGreen.classList.toggle('on', which === 'green');
+}
+function showRed()   { setLamp('red');   }
+function showAmber() { setLamp('amber'); }
+function showGreen() { setLamp('green'); }
 
 function worldMoving(on) {
   // Run or freeze the road scroll + car bob together.
@@ -111,7 +121,27 @@ function toWait() {
   showRed();
   worldMoving(false);   // frozen
   pulse(null);
-  later(toGreen, INITIAL_GREEN_DELAY);
+  later(toAmberGo, INITIAL_GREEN_DELAY);
+}
+
+/* AMBER before GREEN — a 2s "get ready to go" phase (still stopped). */
+function toAmberGo() {
+  clearTimers();
+  state = 'AMBER_GO';
+  showAmber();
+  worldMoving(false);   // still stopped
+  pulse(null);
+  later(toGreen, AMBER_MS);
+}
+
+/* AMBER before RED — a 2s "get ready to stop" phase (still driving). */
+function toAmberStop() {
+  clearTimers();
+  state = 'AMBER_STOP';
+  showAmber();
+  worldMoving(true);    // still driving — keep scrolling
+  pulse(null);
+  later(toRed, AMBER_MS);
 }
 
 function toGreen() {
@@ -141,7 +171,7 @@ function toDriving() {
   pulse(null);
   worldMoving(true);    // world scrolls, car bobs
   playSound('engine');
-  later(toRed, rand(DRIVE_MIN, DRIVE_MAX));
+  later(toAmberStop, rand(DRIVE_MIN, DRIVE_MAX));
 }
 
 function toRed() {
@@ -161,7 +191,7 @@ function toStopped() {
   showRed();
   worldMoving(false);   // frozen
   pulse(null);
-  later(toGreen, rand(STOPPED_MIN, STOPPED_MAX));
+  later(toAmberGo, rand(STOPPED_MIN, STOPPED_MAX));
 }
 
 function toMissed() {
@@ -198,7 +228,7 @@ function onStop() {
     playSound('brake');
     pulse(null);
     worldMoving(false);  // quick, clean freeze
-    later(toGreen, rand(STOPPED_MIN, STOPPED_MAX));
+    later(toAmberGo, rand(STOPPED_MIN, STOPPED_MAX));
   }
 }
 

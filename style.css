@@ -13,7 +13,7 @@
   --dash:        #F2F2F2;   /* road centre dashes */
   --red:         #D62828;   /* red light */
   --green:       #2E9E3F;   /* green light */
-  --amber:       #F9A825;   /* decorative only, stays OFF */
+  --amber:       #F9A825;   /* 2s "get ready" phase between red<->green */
   --ink:         #2B2B2B;
 
   /* ---- Scene proportions (as % of viewport height) ---- */
