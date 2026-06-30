@@ -8,3 +8,10 @@ Thumbs.db
 
 # Backup of the untrimmed car art (kept locally, not deployed)
 assets/car-original-untrimmed.png
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
